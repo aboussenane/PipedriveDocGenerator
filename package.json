@@ -1,0 +1,48 @@
+{
+  "name": "doc-generator-app",
+  "version": "1.0.0",
+  "description": "This app generates documents using data from the Pipedrive API.",
+  "main": "main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "electron .",
+    "build": "electron-builder"
+  },
+  "assets": [
+    "createOutlookFolder.exe"
+  ],
+  "build": {
+    "appId": "com.docproposalgen",
+    "productName": "DocGenerator",
+    "win": {
+      "target": "nsis"
+    },
+    "files": [
+      "**/*",
+      "assets/wallpaper.jpg",
+      "createOutlookFolder.exe",
+      "./style.css"
+
+    ]
+  },
+  "keywords": [],
+  "author": "Adel Boussenane",
+  "license": "ISC",
+  "bin": {
+    "my-app": "main.js"
+  },
+  "dependencies": {
+    "axios": "^1.5.1",
+    "docxtemplater": "^3.40.2",
+    "dotenv": "^16.4.5",
+    "express": "^4.18.2",
+    "pipedrive": "^22.3.0",
+    "pizzip": "^3.1.4",
+    "sudo-prompt": "^9.2.1"
+    
+  },
+  "devDependencies": {
+    "electron": "^27.0.2",
+    "electron-builder": "^24.9.1"
+  }
+}

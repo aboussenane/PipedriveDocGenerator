@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Proposal-generator</title>
+  <link rel="stylesheet" type="text/css" href="./style.css">
+</head>
+
+  <div className="form" style="flex-direction: column; height: 100vh; width: 100vw;overflow: hidden; font-family: Arial, Helvetica, sans-serif;justify-content: center; display: flex; align-items: center; text-align: center;">
+        <h1 style="margin-top: 20px;">Enter a proposal number:</h1>
+        <input id="inputField" className="input" placeholder="Enter 5 digits" style="border-radius:15px; padding: 10px; margin: 10px;">
+        <span className="input-border"></span>
+        <button id="btn" className="submitButton" style="border-radius: 15px; width: 100px;height: 30px;">Submit</button>
+        <h5 id="status" style="color: rgb(94, 255, 0);"></h5>
+        <div id="info-text" style="text-align: left; margin: 10px; padding: 10px; background-color: black; border-radius: 10px; ">
+            This app searches Pipedrive for a deal which matches the ID number provided. <br/><br/>It then: 
+            <ul>Creates folder hierarchy in the directory</ul>
+            <ul>Generates a document using the info from pipedrive</ul>
+            <!--<p id="warning-text">Make sure Outlook is closed before running. Please allow for 30 seconds between generating documents. This is to wait for Outlook to open, create a folder and close again.</p>
+                -->
+        </div>
+        
+        
+        
+        
+        <div className="dropDowns" style="display:none;">
+          <div>
+            <label for="documentDropdown1">Select SubTemplate 1:</label>
+            <select id="documentDropdown1">
+            </select>
+
+          </div>
+          <div>
+            <label for="documentDropdown2">Select SubTemplate 2:</label>
+            <select id="documentDropdown2"></select>
+          </div>
+        </div>
+        
+    </div>
+
+
+<script>
+const { ipcRenderer } = require('electron');
+
+
+
+document.getElementById('btn').addEventListener('click', () => {
+    ipcRenderer.send('btn-click');
+    let term = document.getElementById('inputField').value;
+    ipcRenderer.send('inputField', term);
+    const selectedDocument1 = document.getElementById('documentDropdown1').value;
+    const selectedDocument2 = document.getElementById('documentDropdown2').value;
+
+    ipcRenderer.send('import-documents', { document1: selectedDocument1, document2: selectedDocument2 });
+});
+// Listen for the validation result from the main process
+ipcRenderer.on('inputField-validation', (event, result) => {
+      document.getElementById('status').innerText = result;
+      
+      if (result === 'Invalid input. Please enter 5 digits.') {
+        document.getElementById('inputField').style.borderColor = 'red';
+        document.getElementById('status').style.color = 'red';
+      } else if(result === 'No matching folder found'){
+        document.getElementById('inputField').style.borderColor = 'red';
+        document.getElementById('status').style.color = 'red';
+      }
+    });
+
+
+
+</script>
+ 
+</body>
+</html>
